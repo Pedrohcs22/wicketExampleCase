@@ -1,4 +1,6 @@
 .metadata
+.project
+.settings
 bin/
 tmp/
 *.tmp
