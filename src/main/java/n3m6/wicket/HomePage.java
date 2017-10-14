@@ -1,5 +1,25 @@
 package n3m6.wicket;
 
-public class HomePage {
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 
+public class HomePage extends WebPage {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public HomePage() {
+		add(new AjaxLink<Void>("cadastroLink") {
+
+			@Override
+			public void onClick(AjaxRequestTarget arg0) {
+				setResponsePage(CadastroPage.class);
+			}
+		});
+	}
+	
 }
