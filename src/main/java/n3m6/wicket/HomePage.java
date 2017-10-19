@@ -2,8 +2,12 @@ package n3m6.wicket;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+
+import n3m6.wicket.assets.css.CssAssets;
+import n3m6.wicket.assets.js.JavascriptAssets;
 
 public class HomePage extends WebPage {
 
@@ -21,5 +25,11 @@ public class HomePage extends WebPage {
 			}
 		});
 	}
+
 	
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		JavascriptAssets.renderBootstrapHeader(response, HomePage.class);
+		CssAssets.renderBoostrapCss(response, HomePage.class);
+	}
 }

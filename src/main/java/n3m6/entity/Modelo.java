@@ -28,5 +28,4 @@ public @Data class Modelo implements Serializable {
 	public Modelo() {
 		super();
 	}
-
 }

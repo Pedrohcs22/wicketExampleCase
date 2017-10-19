@@ -1,28 +1,58 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Aula 27</title>
-  </head>
-  <body>
-  	<span wicket:id="labelDeTeste" ></span>
-      <div class="card bg-light">
-        <div class="card-header">Cadastro</div>
-        <div class="card-body">
-          <form>
-            <div class="form-group row">
-              <label for="placa" class="col-sm-2 col-form-label">Placa</label>
-              <div class="col-sm-10">
-                <input type="text" name="placa" class="form-control" placeholder="Informe a placa">
-              </div>
-            </div>
-            <div class="text-right">
-              <div class="btn-group">
-                <button id="salvar" type="submit" class="btn btn-primary">Cadastrar</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-  </body>
+<head>
+<meta charset="utf-8">
+<title>Cadastrar Carro</title>
+</head>
+<body>
+	<wicket:extend>
+		<div class="panel panel-default">
+			<div class="panel-heading">Cadastrar Carro</div>
+			<div class="panel-body">
+				<form wicket:id="cadastrarForm">
+					<div class="form-group row">
+						<label for="placa" class="col-sm-2 col-form-label" style="text-align:right">Placa : </label>
+						<div class="col-sm-2">
+							<input wicket:id="inputPlaca" type="text" name="placa"
+								class="form-control" placeholder="Informe a placa">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="placa" class="col-sm-2 col-form-label" style="text-align:right">Modelos :</label>
+						<div class="col-sm-4">
+							<input wicket:id="modelosAutoComplete" type="text" name="placa"
+								class="form-control" placeholder="Informe o modelo">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="placa" class="col-sm-2 col-form-label" style="text-align:right">Fabricante :</label>
+						<div class="col-sm-4">
+							<input type="text" name="placa" class="form-control" placeholder="Fabricante">
+						</div>
+						<label for="placa" class="col-sm-2 col-form-label">País do Fabricante :</label>
+						<div class="col-sm-2">
+							<input type="text" name="placa" class="form-control" placeholder="País">
+						</div>
+						<div class="col-sm-2">
+							<button type="button" class="btn btn-default">
+							 	Pesquisar
+							 </button>
+						</div>
+					</div>
+
+					<div class="text-right">
+						<div class="btn-group">
+							<button wicket:id="botaoSalvar" id="salvar" type="submit"
+								class="btn btn-primary">Cadastrar</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<div wicket:id="modalFabricante">
+			<label wicket:id="teste" />
+		</div>
+	</wicket:extend>
+</body>
 </html>
