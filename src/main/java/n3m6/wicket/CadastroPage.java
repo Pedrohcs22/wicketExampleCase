@@ -3,19 +3,16 @@ package n3m6.wicket;
 import java.util.Iterator;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteSettings;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompleteRenderer;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import n3m6.entity.Carro;
@@ -38,12 +35,14 @@ public class CadastroPage extends HomePage {
 
 	@SuppressWarnings("unused")
 	public CadastroPage() {
-		inicializarCampos();
 		inicializarCamposModal();
+		inicializarCampos();
 	}
 
 	private void inicializarCamposModal() {
-		modalFabricante.add(new Label("teste", "teste"));
+		modalFabricante.setTitle(Model.of("Pesquisar Fabricante"));
+		modalFabricante.setContent(new ListarFabricantePanel(modalFabricante.getContentId()));
+		add(modalFabricante);
 	}
 	
 	private void inicializarCampos() {
@@ -62,8 +61,6 @@ public class CadastroPage extends HomePage {
 	    AutoCompleteTextField<Modelo> autoComplete = new AutoCompleteTextField<Modelo>(
 	    		"modelosAutoComplete", 
 	    		new PropertyModel<>(modelCadastro, "modelo"), 
-	    		Modelo.class,
-	    		getModeloRenderer(),
 	    		autoCompleteSettings) {
 
 			private static final long serialVersionUID = 1L;
@@ -73,49 +70,34 @@ public class CadastroPage extends HomePage {
 	            return modeloService.listar().iterator();
 	        }
 	    };
-	    autoComplete.add(new OnChangeAjaxBehavior() {
-			
-			@Override
-			protected void onUpdate(AjaxRequestTarget target) {
-				target.add(autoComplete);
-			}
-		});
 	    
 		cadastrarForm.add(autoComplete);
+		
+		// Fabricante
+		AjaxLink ajaxLink = new AjaxLink<Void>("pesquisarFabricante") {
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				modalFabricante.show(target);	
+			}
+		};
+		cadastrarForm.add(ajaxLink);
 		
 		// Placa
 		TextField inputPlaca = new TextField<>("inputPlaca", new PropertyModel<String>(modelCadastro, "placa"));
 		cadastrarForm.add(inputPlaca);
 
 		cadastrarForm.add(new Button("botaoSalvar") {
+			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onSubmit() {
-				info("Carro salvo com sucesso");
+				System.out.println("Bagaça");
 			}
 		});
 
 		add(cadastrarForm);
 	}
-	
-	private IAutoCompleteRenderer<Modelo> getModeloRenderer() {
-		return new IAutoCompleteRenderer<Modelo>() {
 
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void render(Modelo object, Response response, String criteria) {
-				response.write("<li>" + object.getDescricao() + " </li>");
-			}
-
-			@Override
-			public void renderHeader(Response response) {
-				response.write("");
-			}
-
-			@Override
-			public void renderFooter(Response response, int count) {
-				response.write("");
-			}
-		};
-	}
 }

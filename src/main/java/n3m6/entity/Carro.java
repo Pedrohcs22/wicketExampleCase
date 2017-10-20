@@ -28,6 +28,5 @@ public @Data class Carro implements Serializable {
   private Modelo modelo;
 
   private int tracao;
-  
-  
+ 
 }

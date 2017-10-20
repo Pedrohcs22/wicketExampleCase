@@ -28,4 +28,10 @@ public @Data class Modelo implements Serializable {
 	public Modelo() {
 		super();
 	}
+
+	@Override
+	public String toString() {
+		return id + " - " + descricao;
+	}
+
 }

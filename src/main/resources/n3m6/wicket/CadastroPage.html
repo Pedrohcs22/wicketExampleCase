@@ -34,7 +34,7 @@
 							<input type="text" name="placa" class="form-control" placeholder="País">
 						</div>
 						<div class="col-sm-2">
-							<button type="button" class="btn btn-default">
+							<button wicket:id="pesquisarFabricante" type="button" class="btn btn-default">
 							 	Pesquisar
 							 </button>
 						</div>
@@ -42,8 +42,7 @@
 
 					<div class="text-right">
 						<div class="btn-group">
-							<button wicket:id="botaoSalvar" id="salvar" type="submit"
-								class="btn btn-primary">Cadastrar</button>
+							<button wicket:id="botaoSalvar"type="submit"class="btn btn-primary">Cadastrar</button>
 						</div>
 					</div>
 				</form>
@@ -51,7 +50,6 @@
 		</div>
 		
 		<div wicket:id="modalFabricante">
-			<label wicket:id="teste" />
 		</div>
 	</wicket:extend>
 </body>
