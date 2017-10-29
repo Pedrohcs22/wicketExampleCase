@@ -33,4 +33,9 @@ public class CarroService {
     repository.delete(id);
   }
 
+  @Transactional
+  public Integer countByPlacaLike(String placa) {
+	  return repository.countByPlacaLike(placa);
+  }
+  
 }

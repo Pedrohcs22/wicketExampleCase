@@ -28,6 +28,16 @@ public class HomePage extends WebPage {
 				setResponsePage(CadastroPage.class);
 			}
 		});
+		
+		add(new AjaxLink<Void>("consultaLink") {
+
+			@Override
+			public void onClick(AjaxRequestTarget arg0) {
+				setResponsePage(ConsultaPage.class);
+			}
+		});
+		
+		
 	}
 
 	

@@ -18,6 +18,22 @@ public class FabricanteService {
 	public List<Fabricante> listar() {
 		return repository.findAll();
 	}
+	
+	public List<Fabricante> listarByNomeContemIgnoreCase(String nome) {
+		if(nome != null && !nome.isEmpty()) {
+			return repository.findByNomeContainingIgnoreCase(nome);
+		}
+		
+		return listar();
+	}
+	
+	public Integer countByNomeContemIgnoreCase(String nome) {
+		if(nome != null && !nome.isEmpty()) {
+			return repository.countByNomeContainingIgnoreCase(nome);
+		}
+		
+		return 0;
+	}
 
 	public Fabricante obter(Integer id) {
 		return repository.findOne(id);

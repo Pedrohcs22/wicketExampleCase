@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import lombok.Data;
 
@@ -13,7 +14,8 @@ import lombok.Data;
 public @Data class Fabricante implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	  @GeneratedValue(generator = "fabricante", strategy = GenerationType.SEQUENCE)
+	  @SequenceGenerator(name = "fabricante", sequenceName = "fabricante_sequence", allocationSize = 1)
 	private Integer id;
 	
 	private String nome;

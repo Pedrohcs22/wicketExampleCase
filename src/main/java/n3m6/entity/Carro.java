@@ -3,6 +3,8 @@ package n3m6.entity;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import n3m6.enums.Tracao;
 
 @Entity
 @EqualsAndHashCode(of = "id")
@@ -25,8 +28,19 @@ public @Data class Carro implements Serializable {
   private String placa;
   
   @ManyToOne
-  private Modelo modelo;
+  private Modelo modelo ;
 
-  private int tracao;
+  @Enumerated(EnumType.STRING)
+  private Tracao tracao;
+  
+  @ManyToOne
+  private Fabricante fabricante = new Fabricante();
  
+  public String getFabricanteFormatado() {
+	  if(fabricante != null) {
+		  return fabricante.getNome() + "/" + fabricante.getPais();
+	  }
+	  
+	  return "";
+  }
 }

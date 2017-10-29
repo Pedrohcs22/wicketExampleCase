@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <wicket:panel>
-    <div style="margin: 1em">
-    	<form wicket:id="fabricanteForm">
-	    	<div class="col-md-4">
-		        Fabricante : <input wicket:id="nomeFabricante" class="form-control"  >
-	    	</div>
-    	
-    		<div class="col-md-4">
-		        País : <input wicket:id="paisFabricante" class="form-control"  >
-	    	</div>
-	    	
-	    	<div class="col-md-4">
-	    		<div class="col-md-12"></div>
-		        <button wicket:id="cadastrarFabricante" class="btn btn-primary" type="submit">Cadastrar e Selecionar</button>
-	    	</div>
-    		
-    	</form>
-		<div class="col-md-12" style="margin-top:5%;">
-	       <!--  <table wicket:id="tableFabricantes"></table>  -->	
-		</div>
-    </div>
+	<div style="margin: 1em">
+		<form wicket:id="fabricanteForm">
+			<div class="col-md-4">
+				Fabricante : <input wicket:id="nomeFabricante" class="form-control">
+			</div>
+
+			<div wicket:id="novoFabricanteContainer">
+				<div class="col-md-4">
+					País : <input wicket:id="paisFabricante" class="form-control">
+				</div>
+
+				<div class="col-md-4" style="padding-top: 20px;">
+					<div class="col-md-12"></div>
+					<button wicket:id="cadastrarFabricante" class="btn btn-primary"
+						style="padding-top: 10px;" type="submit">Cadastrar e
+						Selecionar</button>
+				</div>
+			</div>
+
+			<div class="col-md-12" style="margin-top: 5%;">
+				<div wicket:id="fabricantesListWrapper">
+					<table class="table table-stripped table-bordered">
+						<tr>
+							<th colspan="3">Nome</th>
+							<th colspan="1">País</th>
+							<th colspan="1"></th>
+						</tr>
+						<div wicket:id="fabricantes">
+						<tr>
+							<td colspan="3"><div wicket:id="nome"></div></td>
+							<td colspan="1"><div wicket:id="pais"></div></td>
+							<td colspan="1" style="text-align: center">
+								<button class="btn btn-primary" wicket:id="selecionar">
+									Selecionar</button>
+							</td>
+						</tr>
+						</div>
+					</table>
+				</div>
+			</div>
+			
+			<div wicket:id="feedbackPanel" ></div>
+		</form>
+	</div>
 </wicket:panel>

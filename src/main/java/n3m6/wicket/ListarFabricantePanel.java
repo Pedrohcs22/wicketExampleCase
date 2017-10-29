@@ -5,94 +5,144 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.NavigationToolbar;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import n3m6.entity.Fabricante;
 import n3m6.service.FabricanteService;
+import n3m6.wicket.componentes.BootstrapFeedbackPanel;
 
 public class ListarFabricantePanel extends Panel {
 
 	@SpringBean
 	private FabricanteService fabricanteService;
+
+	private ModalWindow parentModal;
+
+	private Form formFabricante;
+	
+	private IModel<Fabricante> fabricanteModel = Model.of(new Fabricante());
+	
+	private IModel<Fabricante> fabricanteOriginalModel;
+	
+	private WebMarkupContainer novoFabricanteContainer;
+	
+	private WebMarkupContainer fabricantesListWrapper;
+	
+	private TextField paisFabricante;
+	
+	private AjaxButton cadastrarFabricante;
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ListarFabricantePanel(String id) {
+	public ListarFabricantePanel(String id, IModel<Fabricante> fabricanteOriginalModel , ModalWindow parentModal) {
 		super(id);
+		this.parentModal = parentModal;
+		this.fabricanteOriginalModel = fabricanteOriginalModel;
 		
 		inicializarCampos();
 		inicializarTabela();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void inicializarTabela() {
-		 List colunas = new ArrayList<IColumn>();
-		 
-		 colunas.add(new PropertyColumn<>(Model.of("Nome"), "nome"));
-		 colunas.add(new PropertyColumn<>(Model.of("País"), "pais"));
-		 
-		 DataTable table = new DataTable("tableFabricantes", colunas, new FabricanteProvider(), 10);
-		 table.add(new NavigationToolbar(table));
-		 table.add(new HeadersToolbar(table, null));
-		 
-		 // add(table);
-		 
+		
+		fabricantesListWrapper = new WebMarkupContainer("fabricantesListWrapper");
+		fabricantesListWrapper.setOutputMarkupId(true);
+		
+		fabricantesListWrapper.add(new RefreshingView<Fabricante>("fabricantes") {
+			@Override
+			protected void populateItem(Item<Fabricante> item) {
+				item.add(new Label("nome", new PropertyModel(item.getModel(), "nome")));
+				item.add(new Label("pais", new PropertyModel(item.getModel(), "pais")));
+				item.add(new AjaxButton("selecionar") {
+					@Override
+					protected void onSubmit(AjaxRequestTarget target) {
+						fabricanteOriginalModel.setObject(item.getModelObject());
+						parentModal.close(target);
+						target.add(parentModal.getPage());
+					}
+				});
+			}
+
+			@Override
+			protected Iterator<IModel<Fabricante>> getItemModels() {
+				final List<IModel<Fabricante>> fabricantes = new ArrayList<IModel<Fabricante>>();
+				fabricanteService.listarByNomeContemIgnoreCase(fabricanteModel.getObject().getNome() != null ?
+						fabricanteModel.getObject().getNome() : "")
+				.stream().forEach(fab -> fabricantes.add(Model.of(fab)));
+				return fabricantes.iterator();
+			}
+		});
+
+		formFabricante.add(fabricantesListWrapper);
+		formFabricante.add(new BootstrapFeedbackPanel("feedbackPanel"));
 	}
 
 	private void inicializarCampos() {
-		Form formFabricante = new Form("fabricanteForm");
+		novoFabricanteContainer = new WebMarkupContainer("novoFabricanteContainer");
 		
-		TextField nomeFabricante = new TextField("nomeFabricante");
-		formFabricante.add(nomeFabricante);
-		
-		TextField paisFabricante = new TextField("paisFabricante");
-		formFabricante.add(paisFabricante);
-		
-		AjaxButton cadastrarFabricante = new AjaxButton("cadastrarFabricante", formFabricante) {
+		formFabricante = new Form("fabricanteForm");
+
+		TextField nomeFabricante = new TextField("nomeFabricante", new PropertyModel<String>(fabricanteModel, "nome"));
+		formFabricante.add(nomeFabricante.setRequired(true));
+		nomeFabricante.add(new AjaxFormComponentUpdatingBehavior("keyup") {
 			
-			protected void onSubmit(AjaxRequestTarget target) {
-				System.out.println("SHEEP");
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				if(fabricanteModel.getObject().getNome() != null
+						&& fabricanteService.countByNomeContemIgnoreCase(
+								fabricanteModel.getObject().getNome()) == 0) {
+					novoFabricanteContainer.setVisible(true);
+				} else {
+					novoFabricanteContainer.setVisible(false);
+				}
+			
+				target.add(fabricantesListWrapper, novoFabricanteContainer);
 			}
-			
-		};
-		formFabricante.add(cadastrarFabricante);
+		});
 		
+		paisFabricante = new TextField<>("paisFabricante", new PropertyModel<>(fabricanteModel, "pais"));
+		novoFabricanteContainer.add(paisFabricante.setRequired(true));
+		
+		cadastrarFabricante = new AjaxButton("cadastrarFabricante", formFabricante) {
+
+			protected void onSubmit(AjaxRequestTarget target) {
+				// Salva novo fabricante
+				Fabricante novoFabricante = new Fabricante();
+				novoFabricante.setNome(fabricanteModel.getObject().getNome());
+				novoFabricante.setPais(fabricanteModel.getObject().getPais());
+				
+				fabricanteService.salvar(novoFabricante);
+				
+				fabricanteOriginalModel.setObject(novoFabricante);
+				parentModal.close(target);
+				target.add(parentModal.getPage());
+			}
+		};
+		novoFabricanteContainer.add(cadastrarFabricante);
+		
+		novoFabricanteContainer.setOutputMarkupPlaceholderTag(true);
+		novoFabricanteContainer.setVisible(false);
+		
+		formFabricante.add(novoFabricanteContainer);
 		add(formFabricante);
 	}
-	
-	private class FabricanteProvider implements IDataProvider<Fabricante> {
 
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Iterator iterator(long first, long count) {
-			return fabricanteService.listar().iterator();
-		}
-
-		@Override
-		public long size() {
-			return fabricanteService.listar().size();
-		}
-
-		@Override
-		public IModel<Fabricante> model(Fabricante object) {
-			return new Model<Fabricante>(object);
-		}
-		
-	}
 }
