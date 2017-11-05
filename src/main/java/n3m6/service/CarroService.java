@@ -38,4 +38,13 @@ public class CarroService {
 	  return repository.countByPlacaLike(placa);
   }
   
+  @Transactional
+  public Carro getByPlaca(String placa) {
+	  return repository.getByPlaca(placa);
+  }
+  
+  @Transactional
+  public long count() {
+	  return repository.count();
+  }
 }

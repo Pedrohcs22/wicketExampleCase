@@ -7,6 +7,12 @@
 	<wicket:extend>
 		<div class="col-md-12" style="margin-top: 5%;">
 			<form wicket:id="carrosForm">
+				<div class="col-md-12" wicket:id="filtroContainer">
+					<div class="col-md-1">Filtro :</div>
+					<div class="col-md-4">
+						<input wicket:id="filtroCarros" class="form-control">
+					</div>
+				</div>
 				<div wicket:id="carrosWrapper">
 					<table id="tabela" class="table table-striped">
 						<thead>
@@ -40,6 +46,9 @@
 							</div>
 						</tbody>
 					</table>
+				</div>
+				<div wicket:id="labelContainer">
+					<span class="alert alert-info"> Nenhum carro cadastrado.</span>
 				</div>
 			</form>
 		</div>

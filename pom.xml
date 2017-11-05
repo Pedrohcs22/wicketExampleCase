@@ -18,22 +18,6 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.objenesis</groupId>
-			<artifactId>objenesis</artifactId>
-			<version>2.6</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.wicket-jquery-ui</groupId>
-			<artifactId>wicket-jquery-ui-theme-uilightness</artifactId>
-			<version>8.0.0-M6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.wicket-jquery-ui</groupId>
-			<artifactId>wicket-jquery-ui</artifactId>
-			<version>8.0.0-M6</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
@@ -68,6 +52,12 @@
 			<artifactId>wicketstuff-lambda-components</artifactId>
 			<version>8.0.0-M7</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-bean-validation</artifactId>
+			<version>8.0.0-M7</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

@@ -8,7 +8,7 @@
 
 			<div wicket:id="novoFabricanteContainer">
 				<div class="col-md-4">
-					País : <input wicket:id="paisFabricante" class="form-control">
+					Pais : <input wicket:id="paisFabricante" class="form-control">
 				</div>
 
 				<div class="col-md-4" style="padding-top: 20px;">
@@ -24,7 +24,7 @@
 					<table class="table table-stripped table-bordered">
 						<tr>
 							<th colspan="3">Nome</th>
-							<th colspan="1">País</th>
+							<th colspan="1">Pais</th>
 							<th colspan="1"></th>
 						</tr>
 						<div wicket:id="fabricantes">
@@ -39,9 +39,10 @@
 						</div>
 					</table>
 				</div>
-			</div>
-			
-			<div wicket:id="feedbackPanel" ></div>
+			</div>		
 		</form>
+	</div>
+	<div class="col-md-12">
+		<div class="alert alert-danger" wicket:id="feedbackPanel" ></div>
 	</div>
 </wicket:panel>

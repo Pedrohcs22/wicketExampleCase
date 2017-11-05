@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 public class WebConfiguration {
 
+	// Configurando o console do H2
     @Bean
     ServletRegistrationBean h2servletRegistration(){
 

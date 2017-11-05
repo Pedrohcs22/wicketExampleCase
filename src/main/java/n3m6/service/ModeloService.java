@@ -33,4 +33,8 @@ public class ModeloService {
 	public void remover(Integer id) {
 		repository.delete(id);
 	}
+	
+	public Modelo getByDescricao(String descricao) {
+		return repository.getByDescricao(descricao);
+	}
 }

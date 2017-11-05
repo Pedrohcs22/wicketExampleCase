@@ -6,67 +6,75 @@
 </head>
 <body>
 	<wicket:extend>
-		<style>
-			.red {
-				background:red;
-			}
-		</style>
-	
 		<div class="panel panel-default">
 			<div class="panel-heading">Cadastrar Carro</div>
 			<div class="panel-body">
 				<form wicket:id="cadastrarForm">
 					<div class="form-group row">
-						<label for="placa" class="col-sm-2 col-form-label" style="text-align:right">Placa : </label>
+						<label for="placa" class="col-sm-2 col-form-label"
+							style="text-align: right">Placa : </label>
 						<div class="col-sm-2">
 							<input wicket:id="inputPlaca" type="text" name="placa"
 								class="form-control" placeholder="Informe a placa">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="modelos" class="col-sm-2 col-form-label" style="text-align:right">Modelos :</label>
+						<label for="modelos" class="col-sm-2 col-form-label"
+							style="text-align: right">Modelos :</label>
 						<div class="col-sm-4">
 							<input wicket:id="modelosAutoComplete" type="text" name="modelos"
 								class="form-control" placeholder="Informe o modelo">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="fab" class="col-sm-2 col-form-label" style="text-align:right">Fabricante :</label>
+						<label for="fab" class="col-sm-2 col-form-label"
+							style="text-align: right">Fabricante :</label>
 						<div class="col-sm-4">
-							<input type="text" wicket:id="nomeFabricante" name="fab" class="form-control" placeholder="Fabricante">
+							<input type="text" wicket:id="nomeFabricante" name="fab"
+								class="form-control" placeholder="Fabricante">
 						</div>
-						<label for="paisFab" class="col-sm-2 col-form-label">País do Fabricante :</label>
+						<label for="paisFab" class="col-sm-2 col-form-label">País
+							do Fabricante :</label>
 						<div class="col-sm-2">
-							<input type="text" wicket:id="paisFabricante" name="paisFab" class="form-control" placeholder="País">
+							<input type="text" wicket:id="paisFabricante" name="paisFab"
+								class="form-control" placeholder="País">
 						</div>
 						<div class="col-sm-2">
-							<button wicket:id="pesquisarFabricante" type="button" class="btn btn-default">
-							 	Pesquisar
-							 </button>
+							<button wicket:id="pesquisarFabricante" type="button"
+								class="btn btn-default">Pesquisar</button>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="radios" class="col-sm-2 col-form-label" style="text-align:right">Tração :</label>
+						<label for="radios" class="col-sm-2 col-form-label"
+							style="text-align: right">Tração :</label>
 						<div class="col-sm-4">
 							<span wicket:id="tracaoRadio" type="radio" name="radios"></span>
 						</div>
 					</div>
-					
-					<div>
-						<div wicket:id="feedbackPanel" ></div>
+					<div class="form-group row">
+						<label for="categorias" class="col-sm-2 col-form-label"
+							style="text-align: right">Categoria :</label>
+						<div class="col-sm-4">
+							<select class="form-control" wicket:id="categoriasDropDown"
+								name="categorias"></select>
+						</div>
 					</div>
-					
+
+					<div>
+						<div wicket:id="feedbackPanel"></div>
+					</div>
+
 					<div class="text-right">
 						<div class="btn-group">
-							<button wicket:id="botaoSalvar"type="submit"class="btn btn-primary">Cadastrar</button>
+							<button wicket:id="botaoSalvar" type="submit"
+								class="btn btn-primary">Cadastrar</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
-		
-		<div wicket:id="modalFabricante">
-		</div>
+
+		<div wicket:id="modalFabricante"></div>
 	</wicket:extend>
 </body>
 </html>

@@ -7,6 +7,8 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.bean.validation.PropertyValidator;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -41,6 +43,8 @@ public class ListarFabricantePanel extends Panel {
 	private WebMarkupContainer novoFabricanteContainer;
 	
 	private WebMarkupContainer fabricantesListWrapper;
+	
+	private FeedbackPanel feedbackPanel;
 	
 	private TextField paisFabricante;
 	
@@ -78,21 +82,39 @@ public class ListarFabricantePanel extends Panel {
 						parentModal.close(target);
 						target.add(parentModal.getPage());
 					}
+					
+					@Override
+					protected void onError(AjaxRequestTarget target) {
+						target.add(feedbackPanel);
+					}
 				});
 			}
 
 			@Override
 			protected Iterator<IModel<Fabricante>> getItemModels() {
 				final List<IModel<Fabricante>> fabricantes = new ArrayList<IModel<Fabricante>>();
-				fabricanteService.listarByNomeContemIgnoreCase(fabricanteModel.getObject().getNome() != null ?
-						fabricanteModel.getObject().getNome() : "")
-				.stream().forEach(fab -> fabricantes.add(Model.of(fab)));
+				List<Fabricante> fabricantesEntity;
+				if(fabricanteModel.getObject().getNome() != null) {
+					fabricantesEntity = fabricanteService.listarByNomeContemIgnoreCase(
+							fabricanteModel.getObject().getNome());
+				} else {
+					fabricantesEntity = fabricanteService.listar();
+				}
+			
+				fabricantesEntity.stream().forEach(fab -> fabricantes.add(Model.of(fab)));
 				return fabricantes.iterator();
 			}
 		});
 
 		formFabricante.add(fabricantesListWrapper);
-		formFabricante.add(new BootstrapFeedbackPanel("feedbackPanel"));
+		feedbackPanel = new BootstrapFeedbackPanel("feedbackPanel") {
+			@Override
+			protected void onConfigure() {
+				setVisible(formFabricante.hasError());
+			}
+		};
+		feedbackPanel.setOutputMarkupPlaceholderTag(true);
+		add(feedbackPanel);
 	}
 
 	private void inicializarCampos() {
@@ -100,8 +122,9 @@ public class ListarFabricantePanel extends Panel {
 		
 		formFabricante = new Form("fabricanteForm");
 
-		TextField nomeFabricante = new TextField("nomeFabricante", new PropertyModel<String>(fabricanteModel, "nome"));
-		formFabricante.add(nomeFabricante.setRequired(true));
+		TextField nomeFabricante = new TextField("nomeFabricante",
+				new PropertyModel<String>(fabricanteModel, "nome"));
+		formFabricante.add(nomeFabricante);
 		nomeFabricante.add(new AjaxFormComponentUpdatingBehavior("keyup") {
 			
 			@Override
@@ -119,7 +142,8 @@ public class ListarFabricantePanel extends Panel {
 		});
 		
 		paisFabricante = new TextField<>("paisFabricante", new PropertyModel<>(fabricanteModel, "pais"));
-		novoFabricanteContainer.add(paisFabricante.setRequired(true));
+		paisFabricante.add(new PropertyValidator());
+		novoFabricanteContainer.add(paisFabricante);
 		
 		cadastrarFabricante = new AjaxButton("cadastrarFabricante", formFabricante) {
 
@@ -135,6 +159,11 @@ public class ListarFabricantePanel extends Panel {
 				parentModal.close(target);
 				target.add(parentModal.getPage());
 			}
+			
+			@Override
+			protected void onError(AjaxRequestTarget target) {
+				target.add(feedbackPanel);
+			}
 		};
 		novoFabricanteContainer.add(cadastrarFabricante);
 		
@@ -143,6 +172,11 @@ public class ListarFabricantePanel extends Panel {
 		
 		formFabricante.add(novoFabricanteContainer);
 		add(formFabricante);
+	}
+	
+	public void cleanStart() {
+		fabricanteModel.getObject().setNome("");
+		fabricanteModel.getObject().setPais("");
 	}
 
 }
